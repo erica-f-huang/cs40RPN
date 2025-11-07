@@ -1,0 +1,20 @@
+###############################################################################
+#
+#
+#        Olivia Ribeiro and Erica Huang
+#        Asmcoding
+#        4/29/2025
+#        callmain.ums
+#        Contains the implementation of finalizing initialization and calling 
+#        the beginning of the RPN calculator.
+#
+#
+###############################################################################
+
+
+.section init
+    .zero r0
+    .temps r6, r7
+    goto waiting 
+    end_program:
+        halt

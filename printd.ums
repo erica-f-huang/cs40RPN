@@ -1,0 +1,99 @@
+###############################################################################
+#
+#
+#        Olivia Ribeiro and Erica Huang
+#        Asmcoding
+#        4/29/2025
+#        printd.ums
+#        Contains the implementation of printing a value in digits
+#        based on it's binary value, not in ASCII.
+#
+#
+###############################################################################
+
+
+# TYPICAL REGISTER USAGE
+# r0 holds 0
+# r1 typically holds return address/value
+# r2 holds call stack pointer
+# r3 holds value stack pointer
+# r4 non-volatile register
+# r5 volatile register typically holds manipulated values
+# r6 temporary register
+# r7 temporary register
+
+.section init
+    .zero r0
+    .temps r6, r7
+
+.section text
+
+    printd:
+        output ">>> "
+        #save return addy and non-volatile
+        push r1 on stack r2
+        push r4 on stack r2
+
+        #push reset_exit onto stack so it goes there before exiting printd
+
+        if (r5 == 0) goto print_zero using r4
+        if (r5 <s 0) goto determine_negative using r4
+        if (r5 >s 0) goto print_positive using r4
+
+        determine_negative:
+            if (r5 >s 0) goto print_0x80000000 using r4
+            goto print_negative
+
+        reset_exit:
+            #reset non-volatiles and return
+            output '\n'
+            pop r4 off stack r2
+            pop r1 off stack r2
+
+            goto r1
+
+        
+        
+    print_0x80000000:
+        output "-2147483648"
+        goto reset_exit
+
+    print_zero:
+        output '0'
+        goto reset_exit
+
+    print_negative:
+        output '-'
+        r5 := ~r5
+        r5 := r5 + 1
+        goto print_digits linking r1
+        goto reset_exit
+
+
+    print_positive:
+        goto print_digits linking r1
+        goto reset_exit
+        
+
+    #r5: the number to print
+    print_digits:
+        #BASE CASE
+        if (r5 == 0) goto r1 using r4
+
+        #get LOD and push on to call stack
+        r4 := r5 mod 10
+        push r4 on stack r2
+
+        #recurse with rest of HODs
+        r5 := r5 / 10
+
+        push r1 on stack r2
+        #like calling a function within a function
+        goto print_digits linking r1
+
+        #print from stack recursively
+        pop r1 off stack r2  
+        pop r5 off stack r2
+        r5 := r5 + '0'
+        output r5
+        goto r1

@@ -1,0 +1,47 @@
+###############################################################################
+#
+#
+#        Olivia Ribeiro and Erica Huang
+#        Asmcoding
+#        4/29/2025
+#        urt0.ums
+#        Contains the implementation of initializing registers and basic
+#        data for use with umasm and the um.  
+#
+#
+###############################################################################
+
+
+# r0 holds 0
+# r1 typically holds return address/value
+# r2 holds call stack pointer
+# r3 holds value stack pointer
+# r4 non-volatile register
+# r5 volatile register typically holds manipulated values
+# r6 temporary register
+# r7 temporary register
+
+
+.section init
+        .zero r0
+        .temps r6, r7
+  
+        r0 := 0
+        r1 := 0                 #return address
+        r2 := call_stack        #points to top of call stack
+        r3 := value_stack       #points to top of value stack
+        r4 := 10                #non-volatile register
+        r5 := 0                 
+                      
+.section data
+
+        #call stack points to the end of the allocated memory
+         .space 10000
+        call_stack:
+
+
+ 
+
+
+
+
