@@ -36,7 +36,7 @@ Value Stack:
     with a label pointing to the bottom and register 3 pointing to the top.
 
 
-.sections: TO DO
+.sections:
 
     text:      contains calculator functions
     data:      contains memory space allocation for call and value stacks
